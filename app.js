@@ -130,10 +130,75 @@ function validateCheckoutForm() {
 function toggleCart() {
     const cartSidebar = document.getElementById('cart-sidebar');
     if (cartSidebar) {
-        cartSidebar.classList.toggle('hidden');
+        // We toggle the transform class to trigger the smooth sliding animation
+        cartSidebar.classList.toggle('translate-x-full');
     } else {
         console.error("Cart sidebar not found in HTML!");
     }
+}
+
+// 1. Opens and closes the category sidebar
+function toggleCategorySidebar() {
+    const sidebar = document.getElementById('category-sidebar');
+    if (sidebar) {
+        sidebar.classList.toggle('-translate-x-full');
+    }
+}
+
+// 2. Filters the menu based on sidebar clicks
+function filterMenu(category) {
+    const items = document.querySelectorAll('.menu-item');
+    items.forEach(item => {
+        if (category === 'all' || item.classList.contains(category)) {
+            item.style.display = 'flex';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+    toggleCategorySidebar(); // Auto-close sidebar after picking a category
+}
+
+// 3. Powers the search bar at the top of the page
+function searchFoodItems() {
+    const query = document.getElementById('menu-search-input').value.toLowerCase();
+    const items = document.querySelectorAll('.menu-item');
+    let hasResults = false;
+
+    items.forEach(item => {
+        const name = item.getAttribute('data-food-name').toLowerCase();
+        if (name.includes(query)) {
+            item.style.display = 'flex';
+            hasResults = true;
+        } else {
+            item.style.display = 'none';
+        }
+    });
+
+    const emptyState = document.getElementById('search-empty-state');
+    if (emptyState) {
+        emptyState.style.display = hasResults ? 'none' : 'block';
+    }
+}
+
+// 4. Fallback WhatsApp ordering system
+function sendWhatsAppOrder() {
+    if (cart.length === 0) {
+        alert("Your pack is empty!");
+        return;
+    }
+    
+    let text = "Hello Blue Wave Eats! I would like to place an order:\n\n";
+    cart.forEach(item => {
+        text += `${item.quantity}x ${item.name} - ₦${(item.price * item.quantity).toLocaleString()}\n`;
+    });
+    
+    const total = document.getElementById('cart-total-display').innerText;
+    text += `\nDelivery Zone: ${selectedZoneName || "Not Selected"}`;
+    text += `\nGrand Total: ${total}`;
+    
+    // Replace the 0000000000 with your actual business WhatsApp number
+    const whatsappUrl = `https://wa.me/2348000000000?text=${encodeURIComponent(text)}`;
+    window.open(whatsappUrl, '_blank');
 }
 
 function processDirectWebOrder() {
