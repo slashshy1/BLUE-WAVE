@@ -15,6 +15,7 @@
 /* Elegant card scaling and custom shadows for the category gates */
 .category-portal-card {
     transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    will-change: transform; /* Add this right here */
 }
 
 .category-portal-card:hover {

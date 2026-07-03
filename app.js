@@ -29,7 +29,16 @@ const DELIVERY_ZONES = {
 function saveCart() {
     localStorage.setItem('bw_cart', JSON.stringify(cart));
 }
-
+function clearCart() {
+    if (cart.length === 0) return;
+    
+    if (confirm("Are you sure you want to empty your pack?")) {
+        cart = [];
+        saveCart();
+        updateCartUI();
+        showToast("Pack cleared!");
+    }
+}
 function updateCartUI() {
     const listContainer = document.getElementById('cart-items-list');
     const navCount = document.getElementById('nav-cart-count');
@@ -48,14 +57,14 @@ function updateCartUI() {
         return;
     }
 
-    let itemsSubtotal = 0;
+   let itemsSubtotal = 0;
     let totalItems = 0;
-    listContainer.innerHTML = "";
+    let cartHTML = ""; 
 
     cart.forEach(item => {
         itemsSubtotal += item.price * item.quantity;
         totalItems += item.quantity;
-        listContainer.innerHTML += `
+        cartHTML += `
             <div class="flex justify-between items-center bg-white/[0.02] p-3 rounded-xl border border-white/5">
                 <div><h4 class="text-xs font-bold text-white">${item.name}</h4>
                 <p class="text-xs text-cyan-400">₦${(item.price * item.quantity).toLocaleString()}</p></div>
@@ -66,6 +75,8 @@ function updateCartUI() {
                 </div>
             </div>`;
     });
+
+    listContainer.innerHTML = cartHTML;
 
     const grandTotal = itemsSubtotal + deliveryFee;
     document.getElementById('cart-delivery-display').innerText = "₦" + deliveryFee.toLocaleString();
@@ -135,6 +146,7 @@ function validateCheckoutForm() {
     const btn = document.getElementById('confirm-order-btn');
     
     if(btn) {
+        // It only unlocks if all fields are filled AND the cart actually has items
         btn.disabled = !(name && phone && address && zone && cart.length > 0);
     }
 }
@@ -149,7 +161,7 @@ function createTrackingToast() {
 
     const toast = document.createElement('div');
     toast.id = 'active-tracking-toast';
-    toast.className = 'fixed bottom-6 right-6 left-6 md:left-auto md:w-[400px] bg-slate-900/95 border border-cyan-500/30 backdrop-blur-xl p-5 rounded-2xl shadow-2xl z- animate-slide-up-toast flex flex-col gap-4';
+    toast.className = 'fixed bottom-6 right-6 left-6 md:left-auto md:w-[400px] bg-slate-900/95 border border-cyan-500/30 backdrop-blur-xl p-5 rounded-2xl shadow-2xl z-50 animate-slide-up-toast flex flex-col gap-4';
     
     toast.innerHTML = `
         <div class="flex items-start gap-3.5">
@@ -310,7 +322,10 @@ function processDirectWebOrder() {
         }, (err) => {
             const toast = document.getElementById('active-tracking-toast');
             if (toast) toast.remove();
-            if (btn) btn.disabled = false;
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = originalBtnHTML; // Bring back the original text
+            }
             alert("Network timeout or invalid key config. Please try the WhatsApp method.");
         });
 }
@@ -322,18 +337,21 @@ function sendWhatsAppOrder() {
     }
     
     let text = "Hello Blue Wave Eats! I would like to place an order:\n\n";
+    let itemsSubtotal = 0;
+    
     cart.forEach(item => {
+        itemsSubtotal += item.price * item.quantity;
         text += `${item.quantity}x ${item.name} - ₦${(item.price * item.quantity).toLocaleString()}\n`;
     });
     
-    const total = document.getElementById('cart-total-display').innerText;
+    const grandTotal = itemsSubtotal + deliveryFee;
+    
     text += `\nDelivery Zone: ${selectedZoneName || "Not Selected"}`;
-    text += `\nGrand Total: ${total}`;
+    text += `\nGrand Total: ₦${grandTotal.toLocaleString()}`;
     
     const whatsappUrl = `https://wa.me/2348087253969?text=${encodeURIComponent(text)}`;
     window.open(whatsappUrl, '_blank');
 }
-
 function showToast(message) {
     const container = document.getElementById('toast-container');
     if (!container) return;
@@ -353,3 +371,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if(el) el.addEventListener('input', validateCheckoutForm);
     });
 });
+// --- THEME SWITCHER ---
+
+// Check local storage to see what the user picked last time
+if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.classList.add('dark');
+} else {
+    document.documentElement.classList.remove('dark');
+}
+
+function toggleTheme() {
+    // Add or remove the 'dark' class on the whole HTML page
+    document.documentElement.classList.toggle('dark');
+    
+    // Save the choice so it remembers next time
+    if (document.documentElement.classList.contains('dark')) {
+        localStorage.setItem('theme', 'dark');
+    } else {
+        localStorage.setItem('theme', 'light');
+    }
+}
