@@ -24,7 +24,7 @@ const DELIVERY_ZONES = {
     "mainland-close": { name: "Surulere / Yaba / Ikeja", fee: 4000 }
 };
 
-// --- CORE FUNCTIONS ---
+// --- CORE UI & CART FUNCTIONS ---
 
 function saveCart() {
     localStorage.setItem('bw_cart', JSON.stringify(cart));
@@ -35,6 +35,7 @@ function updateCartUI() {
     const navCount = document.getElementById('nav-cart-count');
     const grandTotalEl = document.getElementById('cart-total-display');
     const webGrandTotalText = document.getElementById('web-grand-total-text');
+    const mobileCartCount = document.getElementById('mobile-cart-count');
     
     if (cart.length === 0) {
         listContainer.innerHTML = `<p class="text-slate-500 text-sm text-center py-12">Your cart is empty.</p>`;
@@ -42,6 +43,8 @@ function updateCartUI() {
         grandTotalEl.innerText = "₦0";
         webGrandTotalText.innerText = "₦0";
         navCount.innerText = "0";
+        if (mobileCartCount) mobileCartCount.innerText = "0";
+        validateCheckoutForm();
         return;
     }
 
@@ -57,9 +60,9 @@ function updateCartUI() {
                 <div><h4 class="text-xs font-bold text-white">${item.name}</h4>
                 <p class="text-xs text-cyan-400">₦${(item.price * item.quantity).toLocaleString()}</p></div>
                 <div class="flex items-center gap-3 bg-slate-950 px-2 py-1 rounded-lg border border-white/10">
-                    <button onclick="changeQuantity('${item.name}', -1)" class="px-2">-</button>
+                    <button onclick="changeQuantity('${item.name}', -1)" class="px-2 hover:text-cyan-400 transition">-</button>
                     <span class="text-xs font-bold">${item.quantity}</span>
-                    <button onclick="changeQuantity('${item.name}', 1)" class="px-2">+</button>
+                    <button onclick="changeQuantity('${item.name}', 1)" class="px-2 hover:text-cyan-400 transition">+</button>
                 </div>
             </div>`;
     });
@@ -69,7 +72,9 @@ function updateCartUI() {
     grandTotalEl.innerText = "₦" + grandTotal.toLocaleString();
     webGrandTotalText.innerText = "₦" + grandTotal.toLocaleString();
     navCount.innerText = totalItems;
-    validateCheckoutForm(); // Keep button state in sync
+    if (mobileCartCount) mobileCartCount.innerText = totalItems;
+    
+    validateCheckoutForm(); 
 }
 
 function addToCart(name, price) {
@@ -91,21 +96,24 @@ function changeQuantity(name, amount) {
     }
 }
 
+// --- SIDEBAR & MENU CONTROLLERS ---
+
+function toggleCart() {
+    const cartSidebar = document.getElementById('cart-sidebar');
+    if (cartSidebar) {
+        cartSidebar.classList.toggle('translate-x-full');
+        cartSidebar.classList.toggle('invisible'); 
+    }
+}
+
+// --- CHECKOUT & PAYMENT LOGIC ---
+
 function handleZoneChange() {
     const zoneSelect = document.getElementById('delivery-zone-picker');
     const selectedKey = zoneSelect.value;
     deliveryFee = (selectedKey && DELIVERY_ZONES[selectedKey]) ? DELIVERY_ZONES[selectedKey].fee : 0;
     selectedZoneName = (selectedKey && DELIVERY_ZONES[selectedKey]) ? DELIVERY_ZONES[selectedKey].name : "";
     updateCartUI();
-}
-
-function showToast(message) {
-    const container = document.getElementById('toast-container');
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.innerText = message;
-    container.appendChild(toast);
-    setTimeout(() => toast.remove(), 3000);
 }
 
 function selectBank(bankKey) {
@@ -120,67 +128,193 @@ function selectBank(bankKey) {
 }
 
 function validateCheckoutForm() {
-    const name = document.getElementById('cust-name').value.trim();
-    const phone = document.getElementById('cust-phone').value.trim();
-    const address = document.getElementById('cust-address').value.trim();
-    const zone = document.getElementById('delivery-zone-picker').value;
+    const name = document.getElementById('cust-name')?.value.trim();
+    const phone = document.getElementById('cust-phone')?.value.trim();
+    const address = document.getElementById('cust-address')?.value.trim();
+    const zone = document.getElementById('delivery-zone-picker')?.value;
     const btn = document.getElementById('confirm-order-btn');
-    btn.disabled = !(name && phone && address && zone && cart.length > 0);
-}
-function toggleCart() {
-    const cartSidebar = document.getElementById('cart-sidebar');
-    if (cartSidebar) {
-        // We toggle the transform class to trigger the smooth sliding animation
-        cartSidebar.classList.toggle('translate-x-full');
-    } else {
-        console.error("Cart sidebar not found in HTML!");
+    
+    if(btn) {
+        btn.disabled = !(name && phone && address && zone && cart.length > 0);
     }
 }
 
-// 1. Opens and closes the category sidebar
-function toggleCategorySidebar() {
-    const sidebar = document.getElementById('category-sidebar');
-    if (sidebar) {
-        sidebar.classList.toggle('-translate-x-full');
-    }
+// ==========================================
+// NEW CINEMATIC LOGISTICS TRACKING GENERATOR
+// ==========================================
+
+function createTrackingToast() {
+    const existing = document.getElementById('active-tracking-toast');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.id = 'active-tracking-toast';
+    toast.className = 'fixed bottom-6 right-6 left-6 md:left-auto md:w-[400px] bg-slate-900/95 border border-cyan-500/30 backdrop-blur-xl p-5 rounded-2xl shadow-2xl z- animate-slide-up-toast flex flex-col gap-4';
+    
+    toast.innerHTML = `
+        <div class="flex items-start gap-3.5">
+            <div id="tracking-icon-container" class="w-10 h-10 rounded-xl bg-cyan-950/50 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shrink-0">
+                <svg class="animate-spin-clean w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+            </div>
+            <div class="flex-grow">
+                <div class="flex items-center justify-between">
+                    <span class="text-[10px] uppercase tracking-widest font-extrabold text-cyan-400" id="tracking-status-badge">LOGISTICS STAGE 1/3</span>
+                    <span class="text-[10px] text-slate-400 font-medium animate-pulse-soft" id="tracking-live-dot">● LIVE TRACKING</span>
+                </div>
+                <h3 class="text-sm font-bold text-white mt-0.5" id="tracking-title">Verifying Payment Transfer</h3>
+                <p class="text-xs text-slate-400 mt-1 leading-relaxed" id="tracking-desc">Securely packaging your data matrix and checking digital vault nodes...</p>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-3 gap-1.5 h-1 w-full bg-slate-950 rounded-full overflow-hidden p-[1px]">
+            <div id="bar-stage-1" class="h-full bg-cyan-500 rounded-full transition-all duration-500"></div>
+            <div id="bar-stage-2" class="h-full bg-slate-800 rounded-full transition-all duration-500"></div>
+            <div id="bar-stage-3" class="h-full bg-slate-800 rounded-full transition-all duration-500"></div>
+        </div>
+    `;
+
+    document.body.appendChild(toast);
 }
 
-// 2. Filters the menu based on sidebar clicks
-function filterMenu(category) {
-    const items = document.querySelectorAll('.menu-item');
-    items.forEach(item => {
-        if (category === 'all' || item.classList.contains(category)) {
-            item.style.display = 'flex';
-        } else {
-            item.style.display = 'none';
+function updateTrackingStage(stage, title, description) {
+    const titleEl = document.getElementById('tracking-title');
+    const descEl = document.getElementById('tracking-desc');
+    const badgeEl = document.getElementById('tracking-status-badge');
+    const iconContainer = document.getElementById('tracking-icon-container');
+    
+    if (titleEl) titleEl.innerText = title;
+    if (descEl) descEl.innerText = description;
+    if (badgeEl) badgeEl.innerText = `LOGISTICS STAGE ${stage}/3`;
+
+    if (stage >= 2) {
+        document.getElementById('bar-stage-2')?.classList.replace('bg-slate-800', 'bg-cyan-500');
+    }
+    
+    if (stage >= 3) {
+        const toastCard = document.getElementById('active-tracking-toast');
+        if (toastCard) {
+            toastCard.classList.add('success-glow-bloom');
         }
-    });
-    toggleCategorySidebar(); // Auto-close sidebar after picking a category
-}
 
-// 3. Powers the search bar at the top of the page
-function searchFoodItems() {
-    const query = document.getElementById('menu-search-input').value.toLowerCase();
-    const items = document.querySelectorAll('.menu-item');
-    let hasResults = false;
+        document.getElementById('bar-stage-3')?.classList.replace('bg-slate-800', 'bg-emerald-500');
+        document.getElementById('bar-stage-1')?.classList.replace('bg-cyan-500', 'bg-emerald-500');
+        document.getElementById('bar-stage-2')?.classList.replace('bg-cyan-500', 'bg-emerald-500');
+        
+        badgeEl?.classList.replace('text-cyan-400', 'text-emerald-400');
+        badgeEl.innerText = "ORDER SECURED";
+        if (titleEl) titleEl.classList.add('scale-up-text');
 
-    items.forEach(item => {
-        const name = item.getAttribute('data-food-name').toLowerCase();
-        if (name.includes(query)) {
-            item.style.display = 'flex';
-            hasResults = true;
-        } else {
-            item.style.display = 'none';
+        const liveDot = document.getElementById('tracking-live-dot');
+        if (liveDot) {
+            liveDot.innerText = "SUCCESS";
+            liveDot.classList.replace('text-slate-400', 'text-emerald-400');
         }
-    });
 
-    const emptyState = document.getElementById('search-empty-state');
-    if (emptyState) {
-        emptyState.style.display = hasResults ? 'none' : 'block';
+        if (iconContainer) {
+            iconContainer.className = "w-10 h-10 rounded-xl bg-emerald-950/50 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0 scale-up-text";
+            iconContainer.innerHTML = `
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+            `;
+        }
+
+        // --- PREMIUM CELEBRATION CONFETTI EXPLOSION ---
+        if (typeof confetti === 'function') {
+            confetti({
+                particleCount: 140,
+                spread: 80,
+                origin: { y: 0.6 },
+                colors: ['#06b6d4', '#10b981', '#ffffff'],
+                ticks: 200
+            });
+
+            setTimeout(() => {
+                confetti({
+                    particleCount: 60,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0, y: 0.8 },
+                    colors: ['#06b6d4', '#ffffff']
+                });
+            }, 200);
+
+            setTimeout(() => {
+                confetti({
+                    particleCount: 60,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1, y: 0.8 },
+                    colors: ['#10b981', '#ffffff']
+                });
+            }, 200);
+        }
     }
 }
 
-// 4. Fallback WhatsApp ordering system
+function processDirectWebOrder() {
+    createTrackingToast();
+    
+    const btn = document.getElementById('confirm-order-btn');
+    if (btn) btn.disabled = true;
+
+    const templateParams = {
+        name: document.getElementById('cust-name').value,
+        phone: document.getElementById('cust-phone').value,
+        address: document.getElementById('cust-address').value,
+        zone: selectedZoneName,
+        order_summary: cart.map(i => `${i.quantity}x ${i.name}`).join(", "),
+        grand_total: document.getElementById('cart-total-display').innerText,
+        bank: BANK_PROFILES[activeBankKey].bankName
+    };
+
+    emailjs.send('service_cbv623b', 'template_1h2sogr', templateParams)
+        .then(() => {
+            setTimeout(() => {
+                updateTrackingStage(
+                    2, 
+                    "Transmitting to Kitchen", 
+                    "Order synchronized! Generating print tickets for the culinary dispatch array..."
+                );
+
+                setTimeout(() => {
+                    updateTrackingStage(
+                        3, 
+                        "Order Confirmed! 🚀", 
+                        "The kitchen has received your wave order. Preparation of your pack has officially begun!"
+                    );
+
+                    cart = [];
+                    localStorage.removeItem('bw_cart');
+                    updateCartUI();
+                    
+                    setTimeout(() => {
+                        toggleCart();
+                    }, 1000);
+
+                    setTimeout(() => {
+                        const toast = document.getElementById('active-tracking-toast');
+                        if (toast) {
+                            toast.style.transition = "all 0.5s ease-out";
+                            toast.style.opacity = "0";
+                            toast.style.transform = "translateY(20px)";
+                            setTimeout(() => toast.remove(), 500);
+                        }
+                    }, 6000);
+
+                }, 2000);
+            }, 1500);
+
+        }, (err) => {
+            const toast = document.getElementById('active-tracking-toast');
+            if (toast) toast.remove();
+            if (btn) btn.disabled = false;
+            alert("Network timeout or invalid key config. Please try the WhatsApp method.");
+        });
+}
+
 function sendWhatsAppOrder() {
     if (cart.length === 0) {
         alert("Your pack is empty!");
@@ -196,34 +330,26 @@ function sendWhatsAppOrder() {
     text += `\nDelivery Zone: ${selectedZoneName || "Not Selected"}`;
     text += `\nGrand Total: ${total}`;
     
-    // Replace the 0000000000 with your actual business WhatsApp number
-    const whatsappUrl = `https://wa.me/2348000000000?text=${encodeURIComponent(text)}`;
+    const whatsappUrl = `https://wa.me/2348087253969?text=${encodeURIComponent(text)}`;
     window.open(whatsappUrl, '_blank');
 }
 
-function processDirectWebOrder() {
-    const templateParams = {
-        name: document.getElementById('cust-name').value,
-        phone: document.getElementById('cust-phone').value,
-        address: document.getElementById('cust-address').value,
-        zone: selectedZoneName,
-        order_summary: cart.map(i => `${i.name} (x${i.quantity})`).join(", "),
-        grand_total: document.getElementById('cart-total-display').innerText,
-        bank: BANK_PROFILES[activeBankKey].bankName
-    };
-
-    emailjs.send('service_cbv623b', 'template_1h2sogr', templateParams)
-        .then(() => {
-            alert("Order sent successfully!");
-            cart = [];
-            localStorage.removeItem('bw_cart');
-            updateCartUI();
-        }, (err) => alert("Failed to send. Check console."));
+function showToast(message) {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerText = message;
+    container.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
 }
 
+// --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
     updateCartUI();
-    document.getElementById('cust-name').addEventListener('input', validateCheckoutForm);
-    document.getElementById('cust-phone').addEventListener('input', validateCheckoutForm);
-    document.getElementById('cust-address').addEventListener('input', validateCheckoutForm);
+    
+    ['cust-name', 'cust-phone', 'cust-address'].forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.addEventListener('input', validateCheckoutForm);
+    });
 });

@@ -19,20 +19,20 @@
     </script>
     
     <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="tracking.css">
+
+    <link rel="stylesheet" href="menu.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen relative overflow-x-hidden selection:bg-cyan-500 selection:text-slate-950"> 
-      
-</script>
-<head>
-    <link rel="stylesheet" href="style.css">
-</head>
-</head>
-<body class="bg-slate-950 text-slate-100 min-h-screen relative overflow-x-hidden selection:bg-cyan-500 selection:text-slate-950">
+<body class="bg-slate-950 text-slate-100 min-h-screen relative overflow-x-hidden selection:bg-cyan-500 selection:text-slate-950 pb-20 md:pb-0">
 
     <div class="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none"></div>
     <div class="absolute top-[40%] right-[-10%] w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[120px] pointer-events-none"></div>
 
-    <header class="fixed top-4 left-1/2 -translate-x-1/2 w-[94%] max-w-6xl bg-slate-900/60 backdrop-blur-xl border border-white/10 px-6 py-4 rounded-full flex justify-between items-center z-40 shadow-2xl">
+    <header class="fixed top-0 sm:top-4 left-0 sm:left-1/2 sm:-translate-x-1/2 w-full sm:w-[94%] max-w-6xl bg-slate-900/60 backdrop-blur-xl border-b sm:border border-white/10 px-4 sm:px-6 py-3 sm:py-4 rounded-none sm:rounded-full flex justify-between items-center z-40 shadow-2xl transition-all duration-300">
         
         <div onclick="toggleCategorySidebar()" class="text-base md:text-xl font-extrabold tracking-tight flex items-center gap-2.5 cursor-pointer group select-none flex-shrink-0">
             <div class="p-2.5 rounded-full bg-white/5 border border-white/10 group-hover:border-cyan-500/40 group-hover:bg-cyan-950/30 transition duration-200">
@@ -41,13 +41,13 @@
             <span class="hidden sm:inline">BLUE<span class="text-cyan-400">WAVE</span></span>
         </div>
 
-        <div class="flex-grow max-w-2xl mx-4 lg:mx-8 relative">
-            <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
-            <input type="text" id="menu-search-input" onkeyup="searchFoodItems()" placeholder="Search delicious food (e.g., Egusi, Jollof, Puff Puff)..." class="w-full bg-slate-950/80 border border-white/10 rounded-full pl-11 pr-4 py-3 text-xs md:text-sm text-white outline-none focus:border-cyan-500 transition focus:ring-1 focus:ring-cyan-500/30">
+        <div class="flex-grow max-w-2xl mx-3 sm:mx-4 lg:mx-8 relative">
+            <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400"></i>
+            <input type="text" id="menu-search-input" onkeyup="searchFoodItems()" placeholder="Search dishes (e.g., Egusi, Jollof)..." class="w-full bg-slate-950/80 border border-white/10 rounded-full pl-10 pr-4 py-2.5 text-xs md:text-sm text-white outline-none focus:border-cyan-500 transition focus:ring-1 focus:ring-cyan-500/30">
         </div>
 
         <div class="flex items-center gap-2 flex-shrink-0">
-            <button onclick="toggleCart()" class="bg-gradient-to-r from-blue-600 to-cyan-500 hover:opacity-90 text-white px-5 py-3 rounded-full transition shadow-lg flex items-center gap-2 text-xs font-bold">
+            <button onclick="toggleCart()" class="bg-gradient-to-r from-blue-600 to-cyan-500 hover:opacity-90 text-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-full transition shadow-lg flex items-center gap-2 text-xs font-bold">
                 <i data-lucide="shopping-cart" class="w-4 h-4"></i>
                 <span class="hidden md:inline">View Pack</span>
                 <span id="nav-cart-count" class="bg-amber-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full">0</span>
@@ -55,7 +55,7 @@
         </div>
     </header>
 
-    <div id="category-sidebar" class="fixed top-0 left-0 h-full w-full sm:w-[340px] bg-slate-950/98 backdrop-blur-2xl border-r border-white/10 z-50 transform -translate-x-full transition-transform duration-300 p-6 flex flex-col shadow-2xl">
+    <div id="category-sidebar" class="invisible fixed top-0 left-0 h-full w-full sm:w-[340px] bg-slate-950/98 backdrop-blur-2xl border-r border-white/10 z-50 transform -translate-x-full transition-transform duration-300 p-6 flex flex-col shadow-2xl">
         <div class="flex justify-between items-center border-b border-white/10 pb-4 mb-6">
             <div class="text-sm font-black uppercase tracking-widest text-cyan-400 flex items-center gap-2">
                 <i data-lucide="sliders" class="w-4 h-4"></i> Explore Categories
@@ -95,19 +95,19 @@
         </div>
     </div>
 
-    <section class="pt-40 pb-12 px-4 max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-        <div class="space-y-6 text-center md:text-left">
-            <span class="inline-block bg-white/5 border border-white/10 backdrop-blur-md text-cyan-400 text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full">
+    <section class="pt-24 sm:pt-32 md:pt-40 pb-8 md:pb-12 px-4 max-w-6xl mx-auto grid md:grid-cols-2 gap-6 md:gap-12 items-center">
+        <div class="space-y-4 md:space-y-6 text-center md:text-left">
+            <span class="inline-block bg-white/5 border border-white/10 backdrop-blur-md text-cyan-400 text-[10px] sm:text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full">
                 🇳🇬 Coastal Spices Meet Naija Staples
             </span>
-            <h1 class="text-4xl md:text-6xl font-black tracking-tight leading-tight">
-                Premium taste, <br>born from the <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Ocean Wave.</span>
+            <h1 class="text-3xl sm:text-4xl md:text-6xl font-black tracking-tight leading-tight">
+                Premium taste, <br class="hidden sm:inline">born from the <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Ocean Wave.</span>
             </h1>
-            <p class="text-slate-400 text-sm leading-relaxed max-w-lg">
+            <p class="text-slate-400 text-xs sm:text-sm leading-relaxed max-w-lg mx-auto md:mx-0">
                 Experience high-end dining convenience. Click the <span class="text-cyan-400 font-bold cursor-pointer underline decoration-dotted" onclick="toggleCategorySidebar()">Menu icon logo</span> to open the category slider panel at any time.
             </p>
             <div class="pt-2">
-                <a href="#menu-section" class="inline-block bg-gradient-to-r from-blue-600 to-cyan-500 hover:opacity-90 text-white font-bold px-8 py-4 rounded-2xl transition text-center shadow-xl text-sm tracking-wide">
+                <a href="#menu-section" class="inline-block bg-gradient-to-r from-blue-600 to-cyan-500 hover:opacity-90 text-white font-bold px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl transition text-center shadow-xl text-xs sm:text-sm tracking-wide">
                     View Entire Food Matrix
                 </a>
             </div>
@@ -116,7 +116,7 @@
         <div class="relative flex justify-center">
             <div class="w-full max-w-sm rounded-3xl bg-gradient-to-tr from-blue-500 to-amber-500 p-[1px] shadow-2xl">
                 <div class="bg-slate-900 rounded-[23px] overflow-hidden border border-white/5 space-y-4 pb-6">
-                    <img src="https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?auto=format&fit=crop&w=600&q=80" alt="Ocean Wave Platter" class="w-full h-48 object-cover">
+                    <img src="https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?auto=format&fit=crop&w=600&q=80" alt="Ocean Wave Platter" class="w-full h-44 sm:h-48 object-cover">
                     <div class="px-6 space-y-2">
                         <span class="inline-block bg-cyan-500/20 text-cyan-400 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Signature Box</span>
                         <h3 class="text-xl font-bold">The Ocean Wave Platter</h3>
@@ -129,153 +129,261 @@
         </div>
     </section>
 
-    <section id="menu-section" class="py-12 px-4 max-w-6xl mx-auto border-t border-white/5 scroll-mt-28">
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+ <section id="menu-section" class="py-12 px-4 max-w-6xl mx-auto border-t border-white/5 scroll-mt-16 sm:scroll-mt-28">
+        
+        <div id="category-gate-view" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             
-            <div class="menu-item combos bg-gradient-to-b from-blue-500/5 to-transparent border border-white/5 rounded-2xl overflow-hidden flex flex-col justify-between shadow-xl transition duration-200 hover:border-blue-500/20" data-food-name="economy wave box chops packaging combo">
-                <img src="https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=600&q=80" alt="Finger foods and appetizers box" class="w-full h-44 object-cover">
-                <div class="p-4 flex-grow flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-1">
-                            <h3 class="text-sm font-bold text-white">Economy Wave Box</h3>
-                            <span class="bg-blue-500/20 text-blue-300 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">Best Seller</span>
-                        </div>
-                        <p class="text-slate-400 text-[11px] mb-3 leading-relaxed">Our classic mid-tier group starter package. Perfectly portioned crunch.</p>
-                        <div class="bg-slate-950/40 border border-white/5 rounded-xl p-3 space-y-1 text-[10px] text-slate-400">
-                            <div>• 10 Golden Puff Puff</div>
-                            <div>• 4 Crisp Spring Rolls & Samosas</div>
-                            <div>• 2 Peppered Gizzard Sticks</div>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center mt-4 pt-2 border-t border-white/5">
-                        <span class="text-white text-sm font-extrabold">₦7,500</span>
-                        <button onclick="addToCart('Economy Wave Box', 7500)" class="text-[11px] font-bold text-cyan-400 bg-cyan-400/10 px-3 py-1.5 rounded-xl hover:bg-cyan-500 hover:text-slate-950 transition">Add Box +</button>
-                    </div>
+            <button onclick="openCategoryGate('combos', 'Curated Combo Arrays')" class="category-portal-card group relative overflow-hidden rounded-2xl border border-white/5 bg-slate-950/40 p-8 text-left h-52 flex flex-col justify-between hover:border-blue-500/30 hover:shadow-[0_0_40px_rgba(59,130,246,0.1)]">
+                <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="flex justify-between items-start w-full">
+                    <span class="text-xs font-mono tracking-widest text-blue-400 font-bold">01 / HYBRID</span>
+                    <span class="text-[10px] bg-blue-500/10 text-blue-300 font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">Boxes</span>
                 </div>
-            </div>
+                <div>
+                    <h3 class="text-base font-bold text-white tracking-wide group-hover:text-blue-400 transition-colors">Curated Combos</h3>
+                    <p class="text-xs text-slate-400 mt-1.5 leading-relaxed font-light">Multi-tier party packs and structural platter groupings built for heavy hitters.</p>
+                </div>
+            </button>
 
-            <div class="menu-item combos seafood bg-gradient-to-b from-amber-500/5 to-transparent border border-white/5 rounded-2xl overflow-hidden flex flex-col justify-between shadow-xl transition duration-200 hover:border-amber-500/20" data-food-name="coastal mega platter seafood combo box">
-                <img src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80" alt="Luxury seafood dish platter" class="w-full h-44 object-cover">
-                <div class="p-4 flex-grow flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-1">
-                            <h3 class="text-sm font-bold text-white">Coastal Mega Platter</h3>
-                            <span class="bg-amber-500/20 text-amber-300 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">Premium</span>
-                        </div>
-                        <p class="text-slate-400 text-[11px] mb-3 leading-relaxed">The ultimate luxury feast. Feeds 3-4 heavy hitters or event hosts.</p>
-                        <div class="bg-slate-950/40 border border-white/5 rounded-xl p-3 space-y-1 text-[10px] text-slate-400">
-                            <div>• Double Fisherman's Jollof Rice</div>
-                            <div>• 6 Jumbo Grilled Prawns</div>
-                            <div>• 4 Skewers Peppered Snail</div>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center mt-4 pt-2 border-t border-white/5">
-                        <span class="text-white text-sm font-extrabold">₦24,500</span>
-                        <button onclick="addToCart('Coastal Mega Platter', 24500)" class="text-[11px] font-bold text-cyan-400 bg-cyan-400/10 px-3 py-1.5 rounded-xl hover:bg-cyan-500 hover:text-slate-950 transition">Add Platter +</button>
-                    </div>
+            <button onclick="openCategoryGate('swallow', 'Traditional Native Swallows')" class="category-portal-card group relative overflow-hidden rounded-2xl border border-white/5 bg-slate-950/40 p-8 text-left h-52 flex flex-col justify-between hover:border-cyan-500/30 hover:shadow-[0_0_40px_rgba(6,182,212,0.1)]">
+                <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="flex justify-between items-start w-full">
+                    <span class="text-xs font-mono tracking-widest text-cyan-400 font-bold">02 / SWALLOW</span>
+                    <span class="text-[10px] bg-cyan-500/10 text-cyan-300 font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">Native</span>
                 </div>
-            </div>
+                <div>
+                    <h3 class="text-base font-bold text-white tracking-wide group-hover:text-cyan-400 transition-colors">Traditional Swallows</h3>
+                    <p class="text-xs text-slate-400 mt-1.5 leading-relaxed font-light">Pristine smooth mortars paired with rich, thick lumpy Egusi, Afang, and Abula soups.</p>
+                </div>
+            </button>
 
-            <div class="menu-item swallow bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden flex flex-col justify-between transition duration-200 hover:border-cyan-500/20" data-food-name="pounded yam luxury egusi soup swallow native">
-                <img src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=600&q=80" alt="Pounded yam served with rich Egusi soup" class="w-full h-44 object-cover">
-                <div class="p-4 flex-grow flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-1">
-                            <h3 class="text-sm font-bold text-white">Pounded Yam & Luxury Egusi</h3>
-                            <span class="bg-cyan-500/20 text-cyan-300 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">Native</span>
-                        </div>
-                        <p class="text-slate-400 text-[11px] leading-relaxed mt-1">Smooth, fluffy premium pounded yam paired with rich, thick lumpy Egusi soup cooked with shredded stockfish and kpomo.</p>
-                    </div>
-                    <div class="flex justify-between items-center mt-4 pt-2 border-t border-white/5">
-                        <span class="text-white text-sm font-extrabold">₦5,500</span>
-                        <button onclick="addToCart('Pounded Yam & Luxury Egusi', 5500)" class="text-[11px] font-bold text-cyan-400 bg-cyan-400/10 px-3 py-1.5 rounded-xl hover:bg-cyan-500 hover:text-slate-950 transition">Add +</button>
-                    </div>
+            <button onclick="openCategoryGate('grains', 'Firewood Grain Arrays')" class="category-portal-card group relative overflow-hidden rounded-2xl border border-white/5 bg-slate-950/40 p-8 text-left h-52 flex flex-col justify-between hover:border-emerald-500/30 hover:shadow-[0_0_40px_rgba(16,185,129,0.1)]">
+                <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="flex justify-between items-start w-full">
+                    <span class="text-xs font-mono tracking-widest text-emerald-400 font-bold">03 / GRAINS</span>
+                    <span class="text-[10px] bg-emerald-500/10 text-emerald-300 font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">Firewood</span>
                 </div>
-            </div>
+                <div>
+                    <h3 class="text-base font-bold text-white tracking-wide group-hover:text-emerald-400 transition-colors">Firewood Grains</h3>
+                    <p class="text-xs text-slate-400 mt-1.5 leading-relaxed font-light">Long-grain parboiled rice variants carrying bottom-pot smoky singes and coconut reductions.</p>
+                </div>
+            </button>
 
-            <div class="menu-item swallow bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden flex flex-col justify-between transition duration-200 hover:border-cyan-500/20" data-food-name="premium ijebu garri eba afang soup swallow native">
-                <img src="https://images.unsplash.com/photo-1604152135912-04a022e23696?auto=format&fit=crop&w=600&q=80" alt="Nigerian native vegetable soup" class="w-full h-44 object-cover">
-                <div class="p-4 flex-grow flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-1">
-                            <h3 class="text-sm font-bold text-white">Ijebu Eba & Old-School Afang</h3>
-                            <span class="bg-emerald-500/20 text-emerald-300 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">Chef Special</span>
-                        </div>
-                        <p class="text-slate-400 text-[11px] leading-relaxed mt-1">Sour, perfectly turned yellow Garri served with heavily detailed Afang leaves rich in periwinkle hulls and seasoned shredded beef.</p>
-                    </div>
-                    <div class="flex justify-between items-center mt-4 pt-2 border-t border-white/5">
-                        <span class="text-white text-sm font-extrabold">₦6,000</span>
-                        <button onclick="addToCart('Ijebu Eba & Old-School Afang', 6000)" class="text-[11px] font-bold text-cyan-400 bg-cyan-400/10 px-3 py-1.5 rounded-xl hover:bg-cyan-500 hover:text-slate-950 transition">Add +</button>
-                    </div>
+            <button onclick="openCategoryGate('chops', 'Sizzling Finger Foods')" class="category-portal-card group relative overflow-hidden rounded-2xl border border-white/5 bg-slate-950/40 p-8 text-left h-52 flex flex-col justify-between hover:border-purple-500/30 hover:shadow-[0_0_40px_rgba(168,85,247,0.1)]">
+                <div class="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="flex justify-between items-start w-full">
+                    <span class="text-xs font-mono tracking-widest text-purple-400 font-bold">04 / CHOPS</span>
+                    <span class="text-[10px] bg-purple-500/10 text-purple-300 font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">Sizzling</span>
                 </div>
-            </div>
+                <div>
+                    <h3 class="text-base font-bold text-white tracking-wide group-hover:text-purple-400 transition-colors">Sizzling Chops</h3>
+                    <p class="text-xs text-slate-400 mt-1.5 leading-relaxed font-light">Pillowy sweet dough globes and premium pit-roasted goat meats tossed in raw chilis.</p>
+                </div>
+            </button>
 
-            <div class="menu-item grains bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden flex flex-col justify-between transition duration-200 hover:border-cyan-500/20" data-food-name="smoky party jollof rice grains">
-                <img src="https://images.unsplash.com/photo-1626700051175-6518c4793f7f?auto=format&fit=crop&w=600&q=80" alt="Smoky West African Jollof Rice" class="w-full h-44 object-cover">
-                <div class="p-4 flex-grow flex flex-col justify-between">
-                    <div>
-                        <h3 class="text-sm font-bold text-white">Smoky Party Jollof</h3>
-                        <p class="text-slate-400 text-[11px] leading-relaxed mt-1">Rich firewood-infused Jollof rice served with golden dodo and grilled peppered beef.</p>
-                    </div>
-                    <div class="flex justify-between items-center mt-4 pt-2 border-t border-white/5">
-                        <span class="text-white text-sm font-extrabold">₦4,500</span>
-                        <button onclick="addToCart('Smoky Party Jollof', 4500)" class="text-[11px] font-bold text-cyan-400 bg-cyan-400/10 px-3 py-1.5 rounded-xl hover:bg-cyan-500 hover:text-slate-950 transition">Add +</button>
-                    </div>
+            <button onclick="openCategoryGate('seafood', 'Coastal Seafood Array')" class="category-portal-card group relative overflow-hidden rounded-2xl border border-white/5 bg-slate-950/40 p-8 text-left h-52 flex flex-col justify-between hover:border-amber-500/30 hover:shadow-[0_0_40px_rgba(245,158,11,0.1)]">
+                <div class="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="flex justify-between items-start w-full">
+                    <span class="text-xs font-mono tracking-widest text-amber-400 font-bold">05 / OCEAN</span>
+                    <span class="text-[10px] bg-amber-500/10 text-amber-300 font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">Broths</span>
                 </div>
-            </div>
-
-            <div class="menu-item grains bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden flex flex-col justify-between transition duration-200 hover:border-cyan-500/20" data-food-name="royal ofada deluxe rice grains">
-                <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=600&q=80" alt="Ofada rice with rich spicy pepper stew" class="w-full h-44 object-cover">
-                <div class="p-4 flex-grow flex flex-col justify-between">
-                    <div>
-                        <h3 class="text-sm font-bold text-white">Royal Ofada Deluxe</h3>
-                        <p class="text-slate-400 text-[11px] leading-relaxed mt-1">Local brown rice with rich Ayamase pepper sauce, boiled eggs, and assorted cuts of meats.</p>
-                    </div>
-                    <div class="flex justify-between items-center mt-4 pt-2 border-t border-white/5">
-                        <span class="text-white text-sm font-extrabold">₦6,500</span>
-                        <button onclick="addToCart('Royal Ofada Deluxe', 6500)" class="text-[11px] font-bold text-cyan-400 bg-cyan-400/10 px-3 py-1.5 rounded-xl hover:bg-cyan-500 hover:text-slate-950 transition">Add +</button>
-                    </div>
+                <div>
+                    <h3 class="text-base font-bold text-white tracking-wide group-hover:text-amber-400 transition-colors">Coastal Seafood</h3>
+                    <p class="text-xs text-slate-400 mt-1.5 leading-relaxed font-light">Freshly hauled catfish pepper broth matrices and ember-charred glazed giant croaker selections.</p>
                 </div>
-            </div>
-
-            <div class="menu-item chops bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden flex flex-col justify-between transition duration-200 hover:border-cyan-500/20" data-food-name="golden puff puff chops box package">
-                <img src="https://images.unsplash.com/photo-1599599810769-bcde5a160d32?auto=format&fit=crop&w=600&q=80" alt="Golden sweet fried dough balls puff puff" class="w-full h-44 object-cover">
-                <div class="p-4 flex-grow flex flex-col justify-between">
-                    <div>
-                        <h3 class="text-sm font-bold text-white">Golden Puff Puff</h3>
-                        <p class="text-slate-400 text-[11px] leading-relaxed mt-1">Light, sweet pillowy dough drops fried to a perfect uniform amber crunch. 6pc.</p>
-                    </div>
-                    <div class="flex justify-between items-center mt-4 pt-2 border-t border-white/5">
-                        <span class="text-white text-sm font-extrabold">₦1,500</span>
-                        <button onclick="addToCart('Golden Puff Puff (6pc)', 1500)" class="text-[11px] font-bold text-cyan-400 bg-cyan-400/10 px-3 py-1.5 rounded-xl hover:bg-cyan-500 hover:text-slate-950 transition">Add +</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="menu-item seafood bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden flex flex-col justify-between transition duration-200 hover:border-cyan-500/20" data-food-name="catfish pepper soup seafood broth peppered">
-                <img src="https://images.unsplash.com/photo-1547592165-e1d17f57655c?auto=format&fit=crop&w=600&q=80" alt="Hot spicy Nigerian catfish pepper soup broth" class="w-full h-44 object-cover">
-                <div class="p-4 flex-grow flex flex-col justify-between">
-                    <div>
-                        <h3 class="text-sm font-bold text-white">Catfish Pepper Soup</h3>
-                        <p class="text-slate-400 text-[11px] leading-relaxed mt-1">Fresh local catfish simmered in an intensely hot, fragrant broth packed with native aromatics.</p>
-                    </div>
-                    <div class="flex justify-between items-center mt-4 pt-2 border-t border-white/5">
-                        <span class="text-white text-sm font-extrabold">₦7,000</span>
-                        <button onclick="addToCart('Catfish Pepper Soup', 7000)" class="text-[11px] font-bold text-cyan-400 bg-cyan-400/10 px-3 py-1.5 rounded-xl hover:bg-cyan-500 hover:text-slate-950 transition">Add +</button>
-                    </div>
-                </div>
-            </div>
+            </button>
 
         </div>
-        
-        <div id="search-empty-state" class="hidden text-center py-20 bg-white/[0.01] border border-white/5 rounded-2xl mt-4">
-            <i data-lucide="info" class="w-8 h-8 text-slate-600 mx-auto mb-3"></i>
-            <h4 class="text-sm font-bold text-slate-300">No matching dishes discovered</h4>
-            <p class="text-xs text-slate-500 mt-1">Try refining your terms or look through our sidebar drawers.</p>
+
+        <div id="food-items-view" class="hidden opacity-0 transform translate-y-4">
+            
+            <div class="flex items-center justify-between mb-8 pb-4 border-b border-white/5">
+                <button onclick="closeCategoryGate()" class="flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-cyan-400 transition group">
+                    <span class="transition-transform group-hover:-translate-x-1">←</span> Back to Categories
+                </button>
+                <h2 id="active-category-title-text" class="text-xs uppercase font-mono tracking-[0.2em] text-cyan-400 font-bold">Category Panel</h2>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <div class="menu-item combos bg-gradient-to-b from-blue-500/5 to-transparent border border-white/5 rounded-2xl overflow-hidden flex flex-col justify-between shadow-xl" data-food-name="economy wave box chops packaging combo small puff puff spring rolls samosa gizzard">
+                    <img src="https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=600&q=80" alt="Finger foods box" class="menu-image-viewport">
+                    <div class="p-4 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-white">Economy Wave Box</h3>
+                            <p class="text-slate-400 text-[11px] mb-3 leading-relaxed">Our classic mid-tier group starter package. Perfectly portioned crunch.</p>
+                            <div class="bg-slate-950/40 border border-white/5 rounded-xl p-3 space-y-1 text-[10px] text-slate-400">
+                                <div>• 10 Golden Puff Puff</div><div>• 4 Crisp Spring Rolls & Samosas</div><div>• 2 Peppered Gizzard Sticks</div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center mt-4 pt-2 border-t border-white/5">
+                            <span class="text-white text-sm font-extrabold">₦7,500</span>
+                            <button onclick="addToCart('Economy Wave Box', 7500)" class="text-[11px] font-bold text-cyan-400 bg-cyan-400/10 px-3 py-1.5 rounded-xl hover:bg-cyan-500 hover:text-slate-950 transition">Add Box +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item combos bg-gradient-to-b from-amber-500/5 to-transparent border border-white/5 rounded-2xl overflow-hidden flex flex-col justify-between shadow-xl" data-food-name="coastal mega platter seafood combo box prawns snail fisherman jollof rice">
+                    <img src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80" alt="Luxury seafood platter" class="menu-image-viewport">
+                    <div class="p-4 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-white">Coastal Mega Platter</h3>
+                            <p class="text-slate-400 text-[11px] mb-3 leading-relaxed">The ultimate luxury feast. Feeds 3-4 heavy hitters or event hosts.</p>
+                            <div class="bg-slate-950/40 border border-white/5 rounded-xl p-3 space-y-1 text-[10px] text-slate-400">
+                                <div>• Double Fisherman's Jollof Rice</div><div>• 6 Jumbo Grilled Prawns</div><div>• 4 Skewers Peppered Snail</div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center mt-4 pt-2 border-t border-white/5">
+                            <span class="text-white text-sm font-extrabold">₦24,500</span>
+                            <button onclick="addToCart('Coastal Mega Platter', 24500)" class="text-[11px] font-bold text-cyan-400 bg-cyan-400/10 px-3 py-1.5 rounded-xl hover:bg-cyan-500 hover:text-slate-950 transition">Add Platter +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item swallow bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden flex flex-col justify-between" data-food-name="pounded yam luxury egusi soup swallow native fufu stockfish kpomo">
+                    <img src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=600&q=80" alt="Pounded yam served with rich Egusi soup" class="menu-image-viewport">
+                    <div class="p-4 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-white">Pounded Yam & Luxury Egusi</h3>
+                            <p class="text-slate-400 text-[11px] leading-relaxed mt-1">Smooth, fluffy premium pounded yam paired with rich, thick lumpy Egusi soup cooked with shredded stockfish and tender kpomo.</p>
+                        </div>
+                        <div class="flex justify-between items-center mt-4 pt-2 border-t border-white/5">
+                            <span class="text-white text-sm font-extrabold">₦5,500</span>
+                            <button onclick="addToCart('Pounded Yam & Luxury Egusi', 5500)" class="text-[11px] font-bold text-cyan-400 bg-cyan-400/10 px-3 py-1.5 rounded-xl hover:bg-cyan-500 hover:text-slate-950 transition">Add +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item swallow bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden flex flex-col justify-between" data-food-name="ijebu eba old school afang soup swallow native garri seafood">
+                    <img src="https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=600&q=80" alt="Ijebu Garri Eba with Afang Soup" class="menu-image-viewport">
+                    <div class="p-4 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-white">Ijebu Eba & Old-School Afang</h3>
+                            <p class="text-slate-400 text-[11px] leading-relaxed mt-1">Sharp, sour-profile premium white Ijebu Garri served alongside an oil-rich, deeply simmered Afang leaf matrix loaded with periwinkles.</p>
+                        </div>
+                        <div class="flex justify-between items-center mt-4 pt-2 border-t border-white/5">
+                            <span class="text-white text-sm font-extrabold">₦6,000</span>
+                            <button onclick="addToCart('Ijebu Eba & Old-School Afang', 6000)" class="text-[11px] font-bold text-cyan-400 bg-cyan-400/10 px-3 py-1.5 rounded-xl hover:bg-cyan-500 hover:text-slate-950 transition">Add +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item grains bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden flex flex-col justify-between" data-food-name="smoky party jollof rice grains chicken dodo plantain roasted">
+                    <img src="https://images.unsplash.com/photo-1626700051175-6518c4793f7f?auto=format&fit=crop&w=600&q=80" alt="Authentic Nigerian Smoky Jollof Rice" class="menu-image-viewport">
+                    <div class="p-4 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-white">Smoky Party Jollof</h3>
+                            <p class="text-slate-400 text-[11px] leading-relaxed mt-1">Long-grain parboiled rice cooked in rich habanero-tomato reductions, carrying that distinct firewood bottom-pot singe. Served with fried plantain (Dodo) and chicken.</p>
+                        </div>
+                        <div class="flex justify-between items-center mt-4 pt-2 border-t border-white/5">
+                            <span class="text-white text-sm font-extrabold">₦4,500</span>
+                            <button onclick="addToCart('Smoky Party Jollof', 4500)" class="text-[11px] font-bold text-cyan-400 bg-cyan-400/10 px-3 py-1.5 rounded-xl hover:bg-cyan-500 hover:text-slate-950 transition">Add +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item grains bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden flex flex-col justify-between" data-food-name="royal ofada deluxe rice grains native ayamase bleached palm oil designer sauce">
+                    <img src="https://images.unsplash.com/photo-1608897013039-887f21d8c804?auto=format&fit=crop&w=600&q=80" alt="Gourmet Ofada Rice and Ayamase" class="menu-image-viewport">
+                    <div class="p-4 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-white">Royal Ofada Deluxe</h3>
+                            <p class="text-slate-400 text-[11px] leading-relaxed mt-1">Unpolished brown rice paired with dark green Ayamase designer sauce brewed with soft boiled eggs and locust beans.</p>
+                        </div>
+                        <div class="flex justify-between items-center mt-4 pt-2 border-t border-white/5">
+                            <span class="text-white text-sm font-extrabold">₦6,500</span>
+                            <button onclick="addToCart('Royal Ofada Deluxe', 6500)" class="text-[11px] font-bold text-cyan-400 bg-cyan-400/10 px-3 py-1.5 rounded-xl hover:bg-cyan-500 hover:text-slate-950 transition">Add +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item chops bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden flex flex-col justify-between" data-food-name="golden puff puff chops small sweets dessert breakfast">
+                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80" alt="Golden sweet fried puff puff dough balls" class="menu-image-viewport">
+                    <div class="p-4 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-white">Golden Puff Puff (12 pcs)</h3>
+                            <p class="text-slate-400 text-[11px] leading-relaxed mt-1">Soft, pillowy sweet dough spheres flash-fried to an exact golden brown sheen. Crispy perimeter with an airy core.</p>
+                        </div>
+                        <div class="flex justify-between items-center mt-4 pt-2 border-t border-white/5">
+                            <span class="text-white text-sm font-extrabold">₦2,000</span>
+                            <button onclick="addToCart('Golden Puff Puff (12 pcs)', 2000)" class="text-[11px] font-bold text-cyan-400 bg-cyan-400/10 px-3 py-1.5 rounded-xl hover:bg-cyan-500 hover:text-slate-950 transition">Add +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item seafood bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden flex flex-col justify-between" data-food-name="catfish pepper soup seafood broth native light spices point and kill">
+                    <img src="https://images.unsplash.com/photo-1547592165-e1d17f57655c?auto=format&fit=crop&w=600&q=80" alt="Hot spicy catfish pepper soup" class="menu-image-viewport">
+                    <div class="p-4 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-white">Catfish Pepper Soup</h3>
+                            <p class="text-slate-400 text-[11px] leading-relaxed mt-1">Fresh catfish steaks simmered in a highly aromatic, fiery habanero broth infused with local wild seed spices and uziza.</p>
+                        </div>
+                        <div class="flex justify-between items-center mt-4 pt-2 border-t border-white/5">
+                            <span class="text-white text-sm font-extrabold">₦5,000</span>
+                            <button onclick="addToCart('Catfish Pepper Soup', 5000)" class="text-[11px] font-bold text-cyan-400 bg-cyan-400/10 px-3 py-1.5 rounded-xl hover:bg-cyan-500 hover:text-slate-950 transition">Add +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item swallow bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden flex flex-col justify-between" data-food-name="supreme amala ewedu elegance gbegiri soup swallow native abula ogunfe tripe shaki meat">
+                    <img src="https://images.unsplash.com/photo-1604152135912-04a022e23696?auto=format&fit=crop&w=600&q=80" alt="Premium presentation of Amala Abula" class="menu-image-viewport">
+                    <div class="p-4 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-white">Supreme Amala & Ewedu</h3>
+                            <p class="text-slate-400 text-[11px] leading-relaxed mt-1">Velvety Oyo Amala paired with silky Ewedu soup, honey-bean Gbegiri cream, and slow-stewed proteins (Shaki & beef).</p>
+                        </div>
+                        <div class="flex justify-between items-center mt-4 pt-2 border-t border-white/5">
+                            <span class="text-white text-sm font-extrabold">₦6,000</span>
+                            <button onclick="addToCart('Supreme Amala & Ewedu', 6000)" class="text-[11px] font-bold text-cyan-400 bg-cyan-400/10 px-3 py-1.5 rounded-xl hover:bg-cyan-500 hover:text-slate-950 transition">Add +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item seafood bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden flex flex-col justify-between" data-food-name="charcoal grilled croaker fish wave seafood roasted dodo sweet plantain chips fries">
+                    <img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80" alt="Whole charcoal grilled croaker fish" class="menu-image-viewport">
+                    <div class="p-4 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-white">Charcoal Grilled Croaker Fish</h3>
+                            <p class="text-slate-400 text-[11px] leading-relaxed mt-1">Whole premium Croaker fish, slow-charred, glazed with a sweet-heat bell pepper chili oil sauce, flanked by sweet dodo plantain.</p>
+                        </div>
+                        <div class="flex justify-between items-center mt-4 pt-2 border-t border-white/5">
+                            <span class="text-white text-sm font-extrabold">₦12,500</span>
+                            <button onclick="addToCart('Charcoal Grilled Croaker Fish', 12500)" class="text-[11px] font-bold text-cyan-400 bg-cyan-400/10 px-3 py-1.5 rounded-xl hover:bg-cyan-500 hover:text-slate-950 transition">Add Fish +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item chops bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden flex flex-col justify-between" data-food-name="fiery peppered asun matrix chops small grill roasted woodfired goat meat spicy">
+                    <img src="https://images.unsplash.com/photo-1603360946369-dc9bb6258143?auto=format&fit=crop&w=600&q=80" alt="Spicy roasted peppered goat meat asun" class="menu-image-viewport">
+                    <div class="p-4 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-white">Fiery Woodfired Asun</h3>
+                            <p class="text-slate-400 text-[11px] leading-relaxed mt-1">Sizzling chunks of goat meat, smoke-infused during a wood roast, tossed in a coarse habanero and red onion reduction.</p>
+                        </div>
+                        <div class="flex justify-between items-center mt-4 pt-2 border-t border-white/5">
+                            <span class="text-white text-sm font-extrabold">₦5,000</span>
+                            <button onclick="addToCart('Fiery Woodfired Asun', 5000)" class="text-[11px] font-bold text-cyan-400 bg-cyan-400/10 px-3 py-1.5 rounded-xl hover:bg-cyan-500 hover:text-slate-950 transition">Add +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item grains bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden flex flex-col justify-between" data-food-name="smoky village coconut rice grains prawns dried fish flakes scent leaves native">
+                    <img src="https://images.unsplash.com/photo-1536304997881-a372c179924b?auto=format&fit=crop&w=600&q=80" alt="Deluxe native pan fried coconut rice" class="menu-image-viewport">
+                    <div class="p-4 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-white">Smoky Village Coconut Rice</h3>
+                            <p class="text-slate-400 text-[11px] leading-relaxed mt-1">Aromatic rice reduced in fresh coconut milk, pan-seared with smoked prawns, dry fish flakes, and wild scent leaves.</p>
+                        </div>
+                        <div class="flex justify-between items-center mt-4 pt-2 border-t border-white/5">
+                            <span class="text-white text-sm font-extrabold">₦6,500</span>
+                            <button onclick="addToCart('Smoky Village Coconut Rice', 6500)" class="text-[11px] font-bold text-cyan-400 bg-cyan-400/10 px-3 py-1.5 rounded-xl hover:bg-cyan-500 hover:text-slate-950 transition">Add +</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </section>
-
-    <section class="py-16 px-4 max-w-6xl mx-auto border-t border-white/5">
+    <section class="py-12 md:py-16 px-4 max-w-6xl mx-auto border-t border-white/5">
         <div class="text-center max-w-xl mx-auto mb-10 space-y-2">
             <h2 class="text-2xl md:text-3xl font-black tracking-tight">Why Dining With Us Hits Different</h2>
             <p class="text-slate-400 text-xs md:text-sm">We engineered our workflow around uncompromised flavor thresholds and elite culinary logistics.</p>
@@ -316,7 +424,7 @@
         </div>
     </section>
 
-    <footer class="bg-slate-900/60 backdrop-blur-xl border-t border-white/10 pt-16 pb-8 px-6">
+    <footer class="bg-slate-900/60 backdrop-blur-xl border-t border-white/10 pt-12 pb-8 px-6">
         <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 mb-12 text-xs text-slate-400">
             <div class="space-y-4">
                 <div class="text-base font-extrabold text-white tracking-tight">BLUE<span class="text-cyan-400">WAVE</span></div>
@@ -339,7 +447,7 @@
         </div>
     </footer>
 
-    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full sm:w-[460px] bg-slate-900/98 backdrop-blur-2xl border-l border-l-white/10 z-50 transform translate-x-full transition-transform duration-300 p-6 flex flex-col justify-between shadow-2xl">
+    <div id="cart-sidebar" class="invisible fixed top-0 right-0 h-full w-full sm:w-[460px] bg-slate-900/98 backdrop-blur-2xl border-l border-white/10 z-50 transform translate-x-full transition-transform duration-300 p-6 flex flex-col justify-between shadow-2xl">
         <div class="flex flex-col h-full overflow-hidden">
             <div class="flex justify-between items-center border-b border-white/10 pb-4 mb-4 flex-shrink-0">
                 <h2 class="text-base font-extrabold text-white flex items-center gap-2">
@@ -408,12 +516,10 @@
                         </div>
                     </div>
                     <div class="space-y-2 pt-2">
-                       <button id="confirm-order-btn" onclick="processDirectWebOrder()" 
-        disabled
-        class="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold py-3.5 rounded-xl hover:opacity-90 transition text-xs uppercase tracking-wider flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
-    <i data-lucide="check-circle" class="w-4 h-4"></i>
-    <span>Confirm Bank Transfer (<span id="web-grand-total-text">₦0</span>)</span>
-</button>
+                        <button id="confirm-order-btn" onclick="processDirectWebOrder()" disabled class="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold py-3.5 rounded-xl hover:opacity-90 transition text-xs uppercase tracking-wider flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <i data-lucide="check-circle" class="w-4 h-4"></i>
+                            <span>Confirm Bank Transfer (<span id="web-grand-total-text">₦0</span>)</span>
+                        </button>
                         <div class="flex items-center my-1 text-[9px] text-slate-500 uppercase font-black tracking-widest">
                             <div class="flex-grow border-t border-white/5"></div>
                             <span class="px-2">OR</span>
@@ -440,16 +546,31 @@
         </div>
     </div>
 
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
-        });
-    </script>
-    <script src="app.js"></script>
-</body>
-<div id="auth-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm hidden">
+    <div class="fixed bottom-0 left-0 right-0 z-50 bg-slate-900/85 backdrop-blur-xl border-t border-white/5 py-2.5 px-8 flex justify-around items-center md:hidden shadow-2xl safe-bottom">
+        <a href="#menu-section" class="flex flex-col items-center gap-1 text-cyan-400 active:scale-95 transition-transform">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7" />
+            </svg>
+            <span class="text-[9px] font-bold uppercase tracking-wider">Menu</span>
+        </a>
+
+        <button onclick="document.getElementById('menu-search-input').focus(); window.scrollTo({top: 0, behavior: 'smooth'});" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 active:scale-95 transition-transform">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <span class="text-[9px] font-bold uppercase tracking-wider">Search</span>
+        </button>
+
+        <button onclick="toggleCart()" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 relative active:scale-95 transition-transform">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
+            <span id="mobile-cart-count" class="absolute -top-1.5 -right-2 bg-cyan-500 text-slate-950 text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-md animate-pulse">0</span>
+            <span class="text-[9px] font-bold uppercase tracking-wider">My Pack</span>
+        </button>
+    </div>
+
+    <div id="auth-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm hidden">
         <div class="w-full max-w-sm bg-slate-900 border border-white/10 rounded-3xl p-8 shadow-2xl relative">
             <button onclick="toggleAuth()" class="absolute top-4 right-4 text-slate-500 hover:text-white transition">&times;</button>
             
@@ -486,10 +607,16 @@
     <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2"></div>
 
     <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
         function toggleAuth() {
             document.getElementById('auth-modal').classList.toggle('hidden');
         }
-    </script> 
+    </script>
+    <script src="menu.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

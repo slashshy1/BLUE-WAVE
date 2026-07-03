@@ -1,0 +1,29 @@
+/* ==========================================================================
+   BLUE WAVE EATS - ISOLATED CATEGORY GATE & MENU TRANSITIONS
+   ========================================================================== */
+
+#category-gate-view, 
+#food-items-view {
+    transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
+                transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.pointer-events-none {
+    pointer-events: none;
+}
+
+/* Elegant card scaling and custom shadows for the category gates */
+.category-portal-card {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.category-portal-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Ensure image containers maintain a unified luxury viewport ratio */
+.menu-image-viewport {
+    width: 100%;
+    height: 11rem; /* Equivalent to h-44 */
+    object-fit: cover;
+}
